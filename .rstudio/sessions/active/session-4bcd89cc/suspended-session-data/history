@@ -29,3 +29,5 @@ length(SMS_FEMALE)
 length(SMS_MALE)
 SMS_FEMALE
 summary(SMS_FEMALE)
+source("Christmas_exercise.R")
+source("Christmas_exercise.R")
