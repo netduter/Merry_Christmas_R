@@ -129,7 +129,7 @@ cat("             Υπολογισμός μέτρων μορφής",'\n\n');
 #Θα χρησιμοποιήσω τον δεύτερο συντελεστή ασσυμετρίας του Pearson
 #ο οποίος είναι μη παραμετρικός Πηγή https://en.wikipedia.org/wiki/Skewness
 
-person_second_skewness_coefficient<-function(data){
+pearson_second_skewness_coefficient<-function(data){
   
   return(  3*(mean(data)-median(data))/sd(data)  );
   
@@ -137,7 +137,7 @@ person_second_skewness_coefficient<-function(data){
 }
 
 
-SMS_BEFORE_SKEWNESS<-person_second_skewness_coefficient(R_LAB_DATA_NEW_V3$SMS_BEFORE);
+SMS_BEFORE_SKEWNESS<-pearson_second_skewness_coefficient(R_LAB_DATA_NEW_V3$SMS_BEFORE);
 
 if(SMS_BEFORE_SKEWNESS>0){
   
@@ -160,9 +160,9 @@ if(SMS_BEFORE_SKEWNESS>0){
 #Αποθηκευση διαγράμματος
 jpeg(file="SMS_BEFORE_boxplot.jpeg");
 
-boxplot(R_LAB_DATA_NEW_V3$SMS_BEFORE,main="SMS_BEFORE boxplot (the red line is mean)");
+boxplot(R_LAB_DATA_NEW_V3$SMS_BEFORE,main="SMS_BEFORE boxplot");
 
-abline(h=mean(R_LAB_DATA_NEW_V3$SMS_BEFORE),col="red");
+points(1, mean(R_LAB_DATA_NEW_V3$SMS_BEFORE), col = "red",pch = 16)
 
 dev.off();
 
@@ -351,6 +351,83 @@ SMS_BEFORE_MEN_RANGE<- SMS_BEFORE_MEN_ΜΑΧ - SMS_BEFORE_MEN_ΜΙΝ
 cat(sprintf("To εύρος τιμών για τους άντρες είναι R_y = %s",SMS_BEFORE_MEN_RANGE),"\n\n")
 
 
+# Συντελεστής ασυμμετρίας Pearson για γυναίκες
+
+SMS_BEFORE_WOMEN_SKEWNESS<-pearson_second_skewness_coefficient(SMS_BEFORE_WOMEN);
+
+if(SMS_BEFORE_WOMEN_SKEWNESS>0){
+  
+  cat(sprintf("Η κατανομή των SMS για τις γυναίκες παρουσιάζει θετική ασυμμετρία με γ = %s",SMS_BEFORE_WOMEN_SKEWNESS),"\n")
+  
+  
+}else if(SMS_BEFORE_WOMEN_SKEWNESS<0){
+  
+  
+  cat(sprintf("Η κατανομή των SMS για τις γυναίκες παρουσιάζει αρνητική ασυμμετρία με γ = %s",SMS_BEFORE_WOMEN_SKEWNESS),"\n")
+  
+  
+}else{
+  
+  cat("Η κατανομή των SMS για τις γυναίκες είναι συμμετρική.","\n");
+  
+}
+
+
+
+
+# Συντελεστής ασυμμετρίας Pearson για τους άντρες
+
+SMS_BEFORE_MEN_SKEWNESS<-pearson_second_skewness_coefficient(SMS_BEFORE_MEN);
+
+if(SMS_BEFORE_MEN_SKEWNESS>0){
+  
+  cat(sprintf("Η κατανομή των SMS για τους άντρες παρουσιάζει θετική ασυμμετρία με γ = %s",SMS_BEFORE_MEN_SKEWNESS),"\n")
+  
+  
+}else if(SMS_BEFORE_MEN_SKEWNESS<0){
+  
+  
+  cat(sprintf("Η κατανομή των SMS για τους άντρες παρουσιάζει αρνητική ασυμμετρία με γ = %s",SMS_BEFORE_MEN_SKEWNESS),"\n")
+  
+  
+}else{
+  
+  cat("Η κατανομή των SMS για τους άντρες είναι συμμετρική.","\n");
+  
+}
+
+cat("","\n\n")
+
+
+#Μέτρα θέσης
+cat("Από τα μέτρα θέσης παρατηρούμε πως η ελάχιστη παρατήρηση για τις γυναίκες","\n")
+cat("είναι μεγαλύτερη από την ελάχιστη παρατήρηση για τους άντρες. Ο μέσος όρος αποστολής","\n")
+cat("μηνυμάτων για τις γυναίκες είναι ελαφρώς μεγαλύτερος σε σχέση με τους άντρες.","\n")
+cat("Τα δυο δείγματα παρουσιάζουν ίδια μέγιστη τιμή.","\n\n")
+
+
+
+#Μέτρα διασποράς
+
+
+cat("Σε ότι αφορά τα μέτρα διασποράς, παρατηρούμε πως η διασπορά και τυπική απόκλιση","\n")
+cat("των παρατηρησεων για τους άντρες είναι μεγαλύτερες από τη διασπορά και τυπική απόκλιση","\n")
+cat("για τις γυναίκες.","\n")
+cat("Τα αντίστοιχα θηκογράμματα βρίσκονται στο αρχείο \"SMS_BEFORE_BOTH_GENDERS_boxplot.jpeg\",\n")
+cat("και συμπληρώνουν την εικόνα που έχουμε σχηματίσει για τα δεδομένα, ","\n")
+cat("από τα μέτρα θέσης, διασποράς και ασυμμετρίας.","\n")
+cat("Για ασφαλη συμπεράσματα, θα πρέπει να χρησιμοποιήσουμε ελέγχους υποθέσεων.","\n")
+
+
+
+
+jpeg(file="SMS_BEFORE_BOTH_GENDERS_boxplot.jpeg");
+
+boxplot(SMS_BEFORE_WOMEN,SMS_BEFORE_MEN ,names=c("Γυναίκες","Άντρες"),main="SMS_BEFORE boxplots")
+
+#Προσθήκη των μέσων τιμών.
+points(1:2, c(SMS_BEFORE_WOMEN_MEAN,SMS_BEFORE_MEN_MEAN), col = "red",pch = 16)
+dev.off()
 
 
 
